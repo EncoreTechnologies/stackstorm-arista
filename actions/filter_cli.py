@@ -4,10 +4,12 @@ import json
 
 class FilterCli(Action):
 
-    def run(self, cli_result, command):
+    def run(self, cli_result, command, raw):
         results = []
         for r in cli_result:
             if command in r:
-                parsed = json.loads(r[command])
-                results.append(parsed)
+                output = r[command].replace('\\n', '\n')
+                if not raw:
+                    output = json.loads(output)
+                results.append(output)
         return results

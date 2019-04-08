@@ -5,12 +5,19 @@ arista.cli:
   input:
     - hosts
     - command
+    - raw
 
   tasks:
+    dispatch:
+      action: core.noop
+      on-success:
+        - create_json_command: "{{ not _.raw }}"
+        - run_cli: "{{ _.raw }}"
+          
     create_command:
       action: core.noop
       publish:
-        command_json: "{{ _.command }} | json"
+        command: "{{ _.command }} | json"
       on-success:
         - run_cli
 
@@ -20,7 +27,7 @@ arista.cli:
       input:
         hostname: "{{ _.hostname }}"
         commands:
-          - "{{ _.command_json }}"
+          - "{{ _.command }}"
       publish:
         cli_result: "{{ task('run_cli').result | map(attribute='result.raw') | list }}"
       on-success:
@@ -30,7 +37,8 @@ arista.cli:
       action: arista.filter_cli
       input:
         cli_result: "{{ _.cli_result }}"
-        command: "{{ _.command_json }}"
+        command: "{{ _.command }}"
+        raw: "{{ _.raw }}"
       publish:
         cli_result_filtered: "{{ task('filter_cli').result.result }}"
 

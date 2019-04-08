@@ -18,6 +18,10 @@ parameters:
   command:
     type: string
     description: "Command to execute"
+  raw:
+    type: boolean
+    default: false
+    description: "Should the raw output be shown instead of the JSON output?"
   skip_notify:
     type: array
     default:

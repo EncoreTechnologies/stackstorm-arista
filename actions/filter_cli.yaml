@@ -11,4 +11,8 @@ parameters:
   command:
     type: string
     description: "Command to extract"
+  raw:
+    type: boolean
+    default: false
+    description: "Should the raw output be shown instead of the JSON output?"
 runner_type: "python-script"
