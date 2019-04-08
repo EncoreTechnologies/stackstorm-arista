@@ -1,0 +1,11 @@
+---
+ref: arista
+name: arista
+description: Pack to demo automation of Arista network gear using StackStorm
+keywords: 
+    - arista
+    - network
+    - demo
+version: 0.1.0
+author: Encore Technologies
+email: code@encore.tech
