@@ -12,5 +12,6 @@ class FilterCli(Action):
                 if not raw:
                     output = json.loads(output)
                 results.append({'host': hosts[idx],
+                                'command': command,
                                 'result': output})
         return results

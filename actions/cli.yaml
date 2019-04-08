@@ -25,6 +25,8 @@ parameters:
   skip_notify:
     type: array
     default:
-      - facts
-      - filter_facts
+      - dispatch
+      - make_command_output_json
+      - run_cli
+      - filter_cli
 runner_type: "mistral-v2"
