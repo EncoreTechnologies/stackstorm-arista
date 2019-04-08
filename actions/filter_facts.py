@@ -8,6 +8,7 @@ class FilterFacts(Action):
         for f in facts:
             filtered = {}
             for k in keys:
-                filtered[k] = f[k]
+                if k in f:
+                    filtered[k] = f[k]
             results.append(filtered)
         return results

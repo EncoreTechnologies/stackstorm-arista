@@ -1,0 +1,16 @@
+---
+pack: "arista"
+name: "inventory"
+action_ref: "arista.inventory"
+description: "Gather facts about the Arista inventory"
+formats:
+    - "arista inventory"
+    - "arista inventory hosts {{ hosts }}"
+ack:
+    format: "Roger that boss, mission is a go!"
+result:
+    format: |
+        Received the following output from our mission:
+            status: {{ execution.status }}
+            result:
+        {{ execution.result.facts | to_yaml_string | indent(8, first=True) }}

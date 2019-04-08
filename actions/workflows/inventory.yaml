@@ -12,12 +12,12 @@ arista.inventory:
       input:
         hostname: "{{ _.hostname }}"
       publish:
-        facts: "{{ task('facts').result }}"
+        facts: "{{ task('facts').result | map(attribute='result.raw') | list }}"
       on-success:
         - filter_facts
 
     filter_facts:
-      action: arist.filter_facts
+      action: arista.filter_facts
       input:
         facts: "{{ _.facts }}"
       publish:
