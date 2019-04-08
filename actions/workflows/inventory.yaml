@@ -21,7 +21,7 @@ arista.inventory:
       input:
         facts: "{{ _.facts }}"
       publish:
-        facts_filtered: "{{ task('filter_facts').result }}"
+        facts_filtered: "{{ task('filter_facts').result.result }}"
 
   output:
     facts: "{{ _.facts_filtered }}"

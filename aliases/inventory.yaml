@@ -13,4 +13,4 @@ result:
         Received the following output from our mission:
             status: {{ execution.status }}
             result:
-        {{ execution.result.facts | to_yaml_string | indent(8, first=True) }}
+        {{ execution.result | to_yaml_string | indent(8, first=True) }}

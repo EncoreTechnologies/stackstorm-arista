@@ -15,4 +15,9 @@ parameters:
       - leaf2
       - leaf3
       - leaf4
+  skip_notify:
+    type: array
+    default:
+      - facts
+      - filter_facts
 runner_type: "mistral-v2"
