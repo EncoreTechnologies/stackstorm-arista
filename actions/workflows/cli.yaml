@@ -12,7 +12,7 @@ arista.cli:
       publish:
         command_json: "{{ _.command }} | json"
       on-success:
-        - run-cli
+        - run_cli
 
     run_cli:
       action: napalm.cli
@@ -22,7 +22,17 @@ arista.cli:
         commands:
           - "{{ _.command_json }}"
       publish:
-        cli_result: "{{ task('run_cli').result | map(attribute='result.raw') | map(attribute=_.command_json) | list }}"
+        cli_result: "{{ task('run_cli').result | map(attribute='result.raw') | list }}"
+      on-success:
+        - filter_cli
+
+    filter_cli:
+      action: arista.filter_cli
+      input:
+        cli_result: "{{ _.cli_result }}"
+        command: "{{ _.command_json }}"
+      publish:
+        cli_result_filtered: "{{ task('filter_cli').result.result }}"
 
   output:
-    result: "{{ _.cli_result }}"
+    result: "{{ _.cli_result_filtered }}"

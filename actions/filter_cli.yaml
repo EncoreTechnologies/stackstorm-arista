@@ -1,0 +1,14 @@
+---
+description: "Filters napalm.cli results"
+enabled: true
+entry_point: filter_cli.py
+name: filter_cli
+pack: arista
+parameters:
+  cli_result:
+    type: array
+    description: "Result of CLI command(s)"
+  command:
+    type: string
+    description: "Command to extract"
+runner_type: "python-script"
