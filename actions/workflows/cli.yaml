@@ -11,10 +11,10 @@ arista.cli:
     dispatch:
       action: core.noop
       on-success:
-        - create_json_command: "{{ not _.raw }}"
+        - make_command_output_json: "{{ not _.raw }}"
         - run_cli: "{{ _.raw }}"
           
-    create_command:
+    make_command_output_json:
       action: core.noop
       publish:
         command: "{{ _.command }} | json"
