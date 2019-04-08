@@ -38,6 +38,7 @@ arista.cli:
       input:
         cli_result: "{{ _.cli_result }}"
         command: "{{ _.command }}"
+        hosts: "{{ _.hosts }}"
         raw: "{{ _.raw }}"
       publish:
         cli_result_filtered: "{{ task('filter_cli').result.result }}"

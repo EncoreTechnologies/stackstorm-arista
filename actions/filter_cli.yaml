@@ -11,6 +11,9 @@ parameters:
   command:
     type: string
     description: "Command to extract"
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
   raw:
     type: boolean
     default: false
