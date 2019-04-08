@@ -1,0 +1,28 @@
+version: '2.0'
+
+arista.cli:
+  type: direct
+  input:
+    - hosts
+    - command
+
+  tasks:
+    create_command:
+      action: core.noop
+      publish:
+        command_json: "{{ _.command }} | json"
+      on-success:
+        - run-cli
+
+    run_cli:
+      action: napalm.cli
+      with-items: "hostname in {{ _.hosts }}"
+      input:
+        hostname: "{{ _.hostname }}"
+        commands:
+          - "{{ _.command_json }}"
+      publish:
+        cli_result: "{{ task('run_cli').result | map(attribute='result.raw') | map(attribute=_.command_json) | list }}"
+
+  output:
+    result: "{{ _.cli_result }}"

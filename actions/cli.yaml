@@ -1,0 +1,26 @@
+---
+description: "Runs a CLI command on a list of hosts"
+enabled: true
+entry_point: workflows/cli.yaml
+name: cli
+pack: arista
+parameters:
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
+    default:
+      - spine1
+      - spine2
+      - leaf1
+      - leaf2
+      - leaf3
+      - leaf4
+  command:
+    type: string
+    description: "Command to execute"
+  skip_notify:
+    type: array
+    default:
+      - facts
+      - filter_facts
+runner_type: "mistral-v2"
