@@ -13,6 +13,15 @@ arista.inventory:
         hostname: "{{ _.hostname }}"
       publish:
         facts: "{{ task('facts').result }}"
+      on-success:
+        - filter_facts
+
+    filter_facts:
+      action: arist.filter_facts
+      input:
+        facts: "{{ _.facts }}"
+      publish:
+        facts_filtered: "{{ task('filter_facts').result }}"
 
   output:
-    facts: "{{ _.facts }}"
+    facts: "{{ _.facts_filtered }}"

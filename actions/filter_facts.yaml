@@ -1,0 +1,20 @@
+---
+description: "Filters napalm.get_facts results"
+enabled: true
+entry_point: filter_facts.py
+name: filter_facts
+pack: arista
+parameters:
+  facts:
+    type: array
+    description: "List of objects containing results form napalm.get_facts"
+  keys:
+    type: array
+    default:
+      - fqdn
+      - vendor
+      - os_version
+      - serial_number
+      - model
+      - uptime
+runner_type: "python-script"
