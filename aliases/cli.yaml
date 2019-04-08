@@ -1,0 +1,16 @@
+---
+pack: "arista"
+name: "cli"
+action_ref: "arista.cli"
+description: "Run any CLI command"
+formats:
+    - "arista cli on {{ hosts }} run {{ command }}"
+    - "arista cli raw on {{ hosts }} run {{ command }} {{ raw=True }}"
+ack:
+    format: "Roger that boss, mission is a go!"
+result:
+    format: |
+        Received the following output from our mission:
+            status: {{ execution.status }}
+            result:
+        {{ execution.result.result | to_yaml_string | indent(8, first=True) }}
