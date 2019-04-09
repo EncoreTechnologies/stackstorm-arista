@@ -6,7 +6,8 @@ description: "Run any CLI command"
 formats:
     - "arista cli on {{ hosts }} run {{ command }}"
     - display: "arista cli raw on {{ hosts }} run {{ command }}"
-      representation: "arista cli raw( {{ raw=True }})? on {{ hosts }} run {{ command }}"
+      representation:
+        - "arista cli raw( {{ raw=True }})? on {{ hosts }} run {{ command }}"
 ack:
     format: "Roger that boss, mission is a go!"
 result:
