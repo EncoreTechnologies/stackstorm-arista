@@ -45,3 +45,4 @@ arista.cli:
 
   output:
     result: "{{ _.cli_result_filtered }}"
+    raw: "{{ _.raw }}"

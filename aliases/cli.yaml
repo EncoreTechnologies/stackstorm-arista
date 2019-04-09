@@ -13,4 +13,14 @@ result:
         Received the following output from our mission:
             status: {{ execution.status }}
             result:
+        {% if execution.result.raw %}
+        {% for res in execution.result.result %}
+                host: {{ res.host }}
+                command: {{ res.command }}
+                result:
+                    {{ res.result | replace('\\n', '\n') | indent(12)  }}
+
+        {% endfor %}
+        {% else %}
         {{ execution.result.result | to_yaml_string | indent(8, first=True) }}
+        {% endif %}
