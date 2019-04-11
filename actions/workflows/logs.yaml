@@ -1,6 +1,6 @@
 version: '2.0'
 
-arista.cli:
+arista.logs:
   type: direct
   input:
     - hosts
