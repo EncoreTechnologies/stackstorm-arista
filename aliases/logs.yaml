@@ -17,7 +17,7 @@ result:
         {% for res in execution.result.result %}
         ----------------
             host: {{ res.host }}
-            command: {{ res.command }}
-            result:
+            logs:
                 {{ res.result | replace('\\n', '\n') | indent(8)  }}
+        {% endfor %}
         ```
