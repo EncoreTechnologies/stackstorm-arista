@@ -1,13 +1,11 @@
 ---
 pack: "arista"
-name: "cli"
-action_ref: "arista.cli"
+name: "logs"
+action_ref: "arista.logs"
 description: "Run any CLI command"
 formats:
-    - "arista cli on {{ hosts }} run {{ command }}"
-    - display: "arista cli raw on {{ hosts }} run {{ command }}"
-      representation:
-        - "arista cli raw( {{ raw=True }})? on {{ hosts }} run {{ command }}"
+    - "arista logs on {{ hosts }}"
+    - "arista logs on {{ hosts }} last {{ count }}"
 ack:
     format: "Roger that boss, mission is a go!"
 result:
@@ -16,15 +14,10 @@ result:
         ```
         status: {{ execution.status }}
         result:
-        {% if execution.result.raw %}
         {% for res in execution.result.result %}
         ----------------
             host: {{ res.host }}
             command: {{ res.command }}
             result:
                 {{ res.result | replace('\\n', '\n') | indent(8)  }}
-        {% endfor %}
-        {% else %}
-        {{ execution.result.result | to_yaml_string | indent(8, first=True) }}
-        {% endif %}
         ```

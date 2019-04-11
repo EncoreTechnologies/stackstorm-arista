@@ -1,17 +1,21 @@
 ---
-description: "Returns information about inventory"
+description: "Pull logs from a list of hosts"
 enabled: true
-entry_point: workflows/inventory.yaml
-name: inventory
+entry_point: workflows/logs.yaml
+name: logs
 pack: arista
 parameters:
   hosts:
     type: array
     description: "List of hosts to pull data from. If not specified, pulls from all hosts"
     default: "{{ st2kv.system.arista.hosts }}"
+  count:
+    type: integer
+    description: "Number of logs to pull"
+    default: 10
   skip_notify:
     type: array
     default:
-      - facts
-      - filter_facts
+      - pull_logs
+      - filter_cli
 runner_type: "mistral-v2"

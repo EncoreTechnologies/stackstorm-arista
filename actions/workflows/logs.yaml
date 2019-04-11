@@ -1,0 +1,22 @@
+version: '2.0'
+
+arista.cli:
+  type: direct
+  input:
+    - hosts
+    - count
+
+  tasks:
+    pull_logs:
+      action: arista.cli
+      input:
+        hosts: "{{ _.hosts }}"
+        command: "show logging {{ _.count }}"
+        raw: true
+      publish:
+        cli_command: "{{ task('pull_logs').result.command }}"
+        cli_result: "{{ task('pull_logs').result.result }}"
+
+  output:
+    command: "{{ _.cli_command }}"
+    result: "{{ _.cli_result }}"

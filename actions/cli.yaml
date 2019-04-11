@@ -8,13 +8,7 @@ parameters:
   hosts:
     type: array
     description: "List of hosts to pull data from. If not specified, pulls from all hosts"
-    default:
-      - spine1
-      - spine2
-      - leaf1
-      - leaf2
-      - leaf3
-      - leaf4
+    default: "{{ st2kv.system.arista.hosts }}"
   command:
     type: string
     description: "Command to execute"

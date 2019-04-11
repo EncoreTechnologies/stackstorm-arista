@@ -44,5 +44,6 @@ arista.cli:
         cli_result_filtered: "{{ task('filter_cli').result.result }}"
 
   output:
+    command: "{{ _.command }}"
     result: "{{ _.cli_result_filtered }}"
     raw: "{{ _.raw }}"
