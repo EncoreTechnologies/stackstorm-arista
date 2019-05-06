@@ -399,6 +399,7 @@ def main(mac_to_search, switch_host, switch_username, switch_password):
     if current_switch.eapi:
         all_switches.append(current_switch)
     else:
+        print("unable to find eapi for current switch")
         sys.exit()
     # Perform a query on the switch for MAC query string
     query_switch(current_switch, new_mac_search)
