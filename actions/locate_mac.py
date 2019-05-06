@@ -350,7 +350,8 @@ def search_results(switch_object):
                             remote_ip = neighbors['ip']
                             if (remote_ip not in checked_switches and
                                     remote_ip not in search_devices):
-                                search_devices.append({remote_ip: neighbors['Arista']})
+                                search_devices.append({remote_ip:
+                                                       switch_object.lldp_neighbors[r2]['Arista']})
     # Iterate through all LLDP neighbors
     for r1 in switch_object.lldp_neighbors:
         neighbors = switch_object.lldp_neighbors[r1]
