@@ -1,0 +1,25 @@
+---
+description: "Locates a MAC in an Arista fabric. https://github.com/networkRob/eos-locateMac"
+enabled: true
+entry_point: locate_mac.py
+name: locate_mac
+pack: arista
+runner_type: "python-script"
+parameters:
+  mac:
+    type: string
+    description: "MAC address to locate"
+  host:
+    type: string
+    description: "Hostname/IP of the switch where the search should begin"
+  username:
+    type: string
+    description: "Username to use when connecting to the switches (must be valid for all switches in the fabric)."
+  password:
+    type: string
+    secret: true
+    description: "Password to use when connecting to the switches (must be valid for all switches in the fabric)."
+  ssl_verify:
+    type: boolean
+    default: True
+    description: "Verify SSL/TLS certificates when connecting to the switch's HTTP APIs"
