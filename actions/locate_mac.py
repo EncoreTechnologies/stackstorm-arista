@@ -424,6 +424,7 @@ def main(mac_to_search, switch_host, switch_username, switch_password, ssl_verif
             if rem_ip not in checked_switches:
                 checked_switches.append(r1.keys()[0])
                 rem_ven = r1[rem_ip]
+                print('connecting to remote switch: {}'.format(rem_ip))
                 remote_switch = SwitchCon(rem_ip, switch_username, switch_password, s_vend=rem_ven)
                 all_switches.append(remote_switch)
                 if remote_switch.sw_arista and remote_switch.eapi:
