@@ -54,6 +54,7 @@ from st2common.runners.base_action import Action
 from jsonrpclib import Server
 import sys
 import ssl
+import json
 
 checked_switches = []
 search_devices = []
@@ -61,6 +62,9 @@ all_macs = []
 all_switches = []
 non_eapi = []
 
+
+def json_pretty(data):
+    return json.dumps(data, indent=4, sort_keys=True)
 
 # ==========================================
 # Begin Class Declaration
@@ -145,7 +149,9 @@ class SwitchCon:
 
     def _get_hostname(self):
         "Gets the hostname for the switch"
-        return self.run_commands(['show hostname'])[0]['hostname']
+        result = self.run_commands(['show hostname'])
+        print("get hostname = {}".format(json_pretty(result)))
+        return result[0]['hostname']
 
     def _add_lldp_neighbors(self):
         "Gets LLDP neighbors on switch and adds to the lldp_neighbors attribute"
