@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #
-# Copied from: https://raw.githubusercontent.com/networkRob/eos-locateMac
+# Copied from:
+#  - https://github.com/networkRob/eos-locateMac
+#  - https://raw.githubusercontent.com/networkRob/eos-locateMac
 #
 # Copyright (c) 2018, Arista Networks, Inc.
 # All rights reserved.
