@@ -1,0 +1,22 @@
+---
+description: "Loads a config block on a list of hosts"
+enabled: true
+entry_point: workflows/loadconfig.yaml
+name: loadconfig
+pack: arista
+parameters:
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
+    default: "{{ st2kv.system.arista.hosts }}"
+  config:
+    type: string
+    description: "Config text to load"
+  skip_notify:
+    type: array
+    default:
+      - dispatch
+      - make_command_output_json
+      - run_cli
+      - filter_cli
+runner_type: "mistral-v2"
