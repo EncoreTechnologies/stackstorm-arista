@@ -1,0 +1,21 @@
+version: '2.0'
+
+arista.api_enable:
+  type: direct
+  input:
+    - hosts
+
+  tasks:
+    loadconfigs:
+      action: arista.loadconfig
+      input:
+        hosts: "{{ _.hosts }}"
+        config: >
+          management api http-commands
+              no shutdown
+          end
+      publish:
+        result: "{{ task('loadconfigs').result.result }}"
+
+  output:
+    result: "{{ _.result }}"
