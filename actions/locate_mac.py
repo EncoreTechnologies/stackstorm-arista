@@ -50,7 +50,6 @@ INSTALLATION
 __author__ = 'rmartin'
 __version__ = 3.2
 
-from st2common.runners.base_action import Action
 from jsonrpclib import Server
 import sys
 import ssl
@@ -69,6 +68,7 @@ def json_pretty(data):
 # ==========================================
 # Begin Class Declaration
 # ==========================================
+
 
 class MACHOSTS:
     "Object created for each MAC address found that matches the queried string"
@@ -392,8 +392,12 @@ def search_results(switch_object):
 # ==========================================
 
 
-def main(mac_to_search, switch_host, switch_username, switch_password):
+def main(mac_to_search, switch_host, switch_username, switch_password, ssl_verify):
     "Main script to get started"
+    # disable SSL verification
+    if not ssl_verify and getattr(ssl, '_create_unverified_context', None):
+        ssl._create_default_https_context = ssl._create_unverified_context
+
     print("Searching....")
     # Reformat MAC search string
     mac_to_search = mac_to_search.lower()
@@ -445,11 +449,21 @@ def main(mac_to_search, switch_host, switch_username, switch_password):
 # ==========================================
 
 
-class LocateMacAction(Action):
+if __name__ == '__main__':
+    import argparse
 
-    def run(self, mac, host, username, password, ssl_verify=True):
-        # disable SSL verification
-        if not ssl_verify and getattr(ssl, '_create_unverified_context', None):
-            ssl._create_default_https_context = ssl._create_unverified_context
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m', '--mac', help='MAC address')
+    parser.add_argument('-H', '--hostname', help='Hostname of first switch')
+    parser.add_argument('-u', '--username', help='Username to login to all switches')
+    parser.add_argument('-p', '--password', help='Password to login to all switches')
+    args = parser.parse_args()
+    print('args = {}'.format(args))
+    main(args.mac, args.hostname, args.username, args.password, ssl_verify=False)
+else:
+    from st2common.runners.base_action import Action
 
-        return main(mac, host, username, password)
+    class LocateMacAction(Action):
+
+        def run(self, mac, host, username, password, ssl_verify=True):
+            return main(mac, host, username, password, ssl_verify=ssl_verify)
