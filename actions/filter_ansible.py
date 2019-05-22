@@ -23,7 +23,7 @@ class FilterAnsible(Action):
                     else:
                         task_extract[host] = vars_dict
 
-                extracted.push_back(task_extract)
+                extracted.extend(task_extract)
 
         success = True if extracted else False
         return (success, extracted)
