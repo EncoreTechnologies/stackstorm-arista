@@ -1,0 +1,17 @@
+---
+description: "Enables the Arista eAPI and fixes LLDP info."
+enabled: true
+entry_point: workflows/ansible_api_enable.yaml
+name: ansible_api_enable
+pack: arista
+runner_type: "orquesta"
+parameters:
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
+    default: "{{ st2kv.system.arista.hosts }}"
+  skip_notify:
+    type: array
+    default:
+      - api_enable
+      - filter_ansible

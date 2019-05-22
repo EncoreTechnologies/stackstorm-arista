@@ -1,0 +1,21 @@
+version: '1.0'
+
+input:
+  - hosts
+
+tasks:
+  api_enable:
+    action: ansible.playbook
+    input:
+      cwd: "/opt/stackstorm/packs/arista/etc/ansible"
+      playbook: "./05_api_enable.yaml"
+      inventory_file: "./hosts"
+      env:
+        ANSIBLE_STDOUT_CALLBACK: "json"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - ansible_result: "{{ result() }}"
+
+output:
+  - result: "{{ ctx().ansible_result }}"
