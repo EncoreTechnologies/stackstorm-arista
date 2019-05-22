@@ -10,7 +10,7 @@ arista.api_enable:
       action: arista.loadconfig
       input:
         hosts: "{{ _.hosts }}"
-        config: >
+        config: |
           lldp management-address Management 1
           management api http-commands
               no shutdown
