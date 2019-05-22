@@ -15,7 +15,7 @@ arista.ansible_inventory:
         env:
           ANSIBLE_STDOUT_CALLBACK: "json"
       publish:
-        ansible_result: "{{ task('show_version').result }}"
+        ansible_result: "{{ task('show_version').result.stdout }}"
       on-success:
         - filter_ansible
 
