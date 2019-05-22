@@ -1,0 +1,9 @@
+---
+- name: Gather versions data for all hosts in the fabric
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Get versions
+      eos_command:
+        commands: show version | json

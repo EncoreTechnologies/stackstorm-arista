@@ -1,0 +1,31 @@
+version: '2.0'
+
+arista.ansible_inventory:
+  type: direct
+  input:
+    - hosts
+
+  tasks:
+    show_version:
+      action: ansible.playbook
+      input:
+        cwd: "/opt/stackstorm/packs/arista/etc/ansible"
+        playbook: "01_verison.yaml"
+      publish:
+        ansible_result: "{{ task('show_version').result }}"
+      on-success:
+        - filter_ansible
+
+    filter_ansible:
+      action: arista.filter_ansible
+      input:
+        result: "{{ _.ansible_result }}"
+        tasks:
+          - name: Get versions
+            vars:
+              - stdout_lines
+      publish:
+        facts: "{{ task('filter_ansible').result.result }}"
+
+  output:
+    facts: "{{ _.facts }}"

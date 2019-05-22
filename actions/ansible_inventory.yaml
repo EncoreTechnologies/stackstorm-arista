@@ -1,0 +1,17 @@
+---
+description: "Returns information about inventory using Ansible"
+enabled: true
+entry_point: workflows/ansible_inventory.yaml
+name: ansible_inventory
+pack: arista
+parameters:
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
+    default: "{{ st2kv.system.arista.hosts }}"
+  skip_notify:
+    type: array
+    default:
+      - show_version
+      - filter_ansible
+runner_type: "mistral-v2"

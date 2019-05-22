@@ -1,0 +1,29 @@
+version: '2.0'
+
+arista.locate_mac_deploy:
+  type: direct
+  input:
+    - hosts
+
+  tasks:
+    enable_scp:
+      action: arista.loadconfig
+      input:
+        hosts: "{{ _.hosts }}"
+        config: >
+          aaa authorization exec default local
+          end
+          lldp management-address management 1
+      on-success:
+        - copy_script
+
+    copy_script:
+      action: core.local
+      with-items: "host in {{ _.hosts }}"
+      input:
+        cmd: "sshpass -p 'arista' scp /opt/stackstorm/packs/arista/etc/locateMac.py arista@{{ _.host }}:/mnt/flash/"
+      publish:
+        result: "{{ task('copy_script').result }}"
+
+  output:
+    result: "{{ _.result }}"

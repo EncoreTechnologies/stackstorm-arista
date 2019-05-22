@@ -1,0 +1,31 @@
+---
+description: "Extracts results from an ansible-playbook run"
+enabled: true
+entry_point: filter_ansible.py
+name: filter_ansible
+pack: arista
+parameters:
+  result:
+    type: object
+    description: "Result object from an ansible.playbook action"
+  tasks:
+    type: array
+    items:
+      type: object
+    description: >
+      Names of the tasks that you would like to extract results from.
+      tasks:
+        - name: "task 1"
+        - name: "task 2"
+
+      Data will be extracted in the order requested.
+      By default, all vars will be extracted from each task. If you would like to
+      limit what vars are extracted, simple add a list a vars to each task object:
+      tasks:
+        - name: "task 1"
+          vars:
+            - stdout_lines
+        - name: "task 2"
+          vars:
+            - some_other_var_name
+runner_type: "python-script"

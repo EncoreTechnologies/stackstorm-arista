@@ -1,0 +1,9 @@
+---
+- name: Gather MAC tables
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Get MAC tables
+      eos_command:
+        commands: "show mac address-tables {{ '| json' if json_output else '' }}"
