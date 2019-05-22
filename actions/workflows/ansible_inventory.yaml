@@ -21,7 +21,7 @@ tasks:
   filter_ansible:
     action: arista.filter_ansible
     input:
-      result: "{{ _.ansible_result }}"
+      result: "{{ ctx().ansible_result }}"
       tasks:
         - name: Get versions
           vars:
@@ -32,4 +32,4 @@ tasks:
           - facts: "{{ result().result }}"
 
 output:
-  facts: "{{ _.facts }}"
+  - facts: "{{ ctx().facts }}"
