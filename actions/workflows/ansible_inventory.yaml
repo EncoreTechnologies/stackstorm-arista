@@ -10,7 +10,10 @@ arista.ansible_inventory:
       action: ansible.playbook
       input:
         cwd: "/opt/stackstorm/packs/arista/etc/ansible"
-        playbook: "01_version.yaml"
+        playbook: "./01_version.yaml"
+        inventory_file: "./hosts"
+        env:
+          ANSIBLE_STDOUT_CALLBACK: "json"
       publish:
         ansible_result: "{{ task('show_version').result }}"
       on-success:
