@@ -54,7 +54,7 @@ arista.servicenow_incident:
         sysid: "{{ _.sys_id }}"
         payload:
           comments: |
-            {{ _.facts | to_yaml_string }}
+            {{ to_yaml_string(_.facts) }}
         
   output:
     comments: "{{ _.result }}"
