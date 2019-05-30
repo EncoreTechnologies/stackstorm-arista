@@ -30,6 +30,7 @@ arista.servicenow_incident:
       input:
         hosts: "{{ _.hosts }}"
         command: "show ip route"
+        raw: true
       publish:
         ip_route: "{{ task('ip_route').result.result }}"
       on-success:
@@ -40,18 +41,20 @@ arista.servicenow_incident:
       input:
         hosts: "{{ _.hosts }}"
         command: "show ip bgp summary"
+        raw: true
       publish:
         bgp_summary: "{{ task('bgp_summary').result.result }}"
-      # on-success:
-      #   - servicenow_update
+      on-success:
+        - servicenow_update
 
-    # servicenow_update:
-    #   action: servicenow.update
-    #   input:
-    #     table: incident
-    #     sysid: "{{ _.sys_id }}"
-    #     payload:
-    #       comments: "Adding these from StackStorm"
+    servicenow_facts:
+      action: servicenow.update
+      input:
+        table: incident
+        sysid: "{{ _.sys_id }}"
+        payload:
+          comments: |
+            {{ _.facts | to_yaml_string }}
         
   output:
-    result: "{{ _.result }}"
+    comments: "{{ _.result }}"
