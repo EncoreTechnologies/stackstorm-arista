@@ -56,7 +56,7 @@ arista.servicenow_incident:
           comments: |
             ===========================================================
             == FACTS
-            {{ to_yaml_string(_.facts) | indent(4) }}
+            {{ to_yaml_string(_.facts) }}
             
             ===========================================================
             == LOGS
