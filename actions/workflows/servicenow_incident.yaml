@@ -39,7 +39,7 @@ arista.servicenow_incident:
       action: arista.cli
       input:
         hosts: "{{ _.hosts }}"
-        command: "show bgp summary"
+        command: "show ip bgp summary"
       publish:
         bgp_summary: "{{ task('bgp_summary').result.result }}"
       # on-success:
