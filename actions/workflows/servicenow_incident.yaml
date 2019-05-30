@@ -54,7 +54,18 @@ arista.servicenow_incident:
         sysid: "{{ _.sys_id }}"
         payload:
           comments: |
+            ===========================================================
+            == FACTS
             {{ to_yaml_string(_.facts) }}
-        
-  output:
-    comments: "{{ _.result }}"
+            
+            ===========================================================
+            == LOGS
+            {{ to_yaml_string(_.logs) }}
+
+            ===========================================================
+            == show ip route
+            {{ to_yaml_string(_.ip_route) }}
+
+            ===========================================================
+            == show ip bgp summary
+            {{ to_yaml_string(_.bgp_summary) }}
