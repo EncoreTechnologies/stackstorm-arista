@@ -69,12 +69,12 @@ arista.servicenow_incident:
             == show ip route
             {% for host_routes in _.ip_route  %}
             -------- host: {{ host_routes.host }}
-            {{ host_routes.result | replace('\\\\\\\\n', '\n') }}
+            {{ host_routes.result | replace('\\\\n', '\n') }}
             {% endfor %}
 
             ===========================================================
             == show ip bgp summary
             {% for host_bgp in _.bgp_summary  %}
             -------- host: {{ host_bgp.host }}
-            {{ host_bgp.result | replace('\\\\\\\\n', '\n') }}
+            {{ host_bgp.result | replace('\\\\n', '\n') }}
             {% endfor %}
