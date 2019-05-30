@@ -47,7 +47,7 @@ arista.servicenow_incident:
       on-success:
         - servicenow_update
 
-    servicenow_facts:
+    servicenow_update:
       action: servicenow.update
       input:
         table: incident
