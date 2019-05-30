@@ -56,16 +56,31 @@ arista.servicenow_incident:
           comments: |
             ===========================================================
             == FACTS
-            {{ to_yaml_string(_.facts) }}
+            {{ to_yaml_string(_.facts) | indent(4) }}
             
             ===========================================================
             == LOGS
-            {{ to_yaml_string(_.logs) }}
+            {% for host_logs in _.logs  %}
+            ----------------
+            host: {{ host_logs.host }}
+            logs:
+                {{ host_logs.result | replace('\\n', '\n') | indent(4)  }}
+            {% endfor %}
 
             ===========================================================
             == show ip route
-            {{ to_yaml_string(_.ip_route) }}
+            {% for host_routes in _.logs  %}
+            ----------------
+            host: {{ host_routes.host }}
+            show ip route:
+                {{ host_routes.result | replace('\\n', '\n') | indent(4)  }}
+            {% endfor %}
 
             ===========================================================
             == show ip bgp summary
-            {{ to_yaml_string(_.bgp_summary) }}
+            {% for host_bgp in _.logs  %}
+            ----------------
+            host: {{ host_bgp.host }}
+            show ip bgp summary:
+                {{ host_bgp.result | replace('\\n', '\n') | indent(4)  }}
+            {% endfor %}
