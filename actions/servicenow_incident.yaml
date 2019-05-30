@@ -1,0 +1,18 @@
+---
+description: "Updates a ServiceNow incident with some troubleshooting informaiton"
+enabled: true
+entry_point: workflows/servicenow_incident.yaml
+name: servicenow_incident
+pack: arista
+parameters:
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
+    default: "{{ st2kv.system.arista.hosts }}"
+  sys_id:
+    type: string
+  skip_notify:
+    type: array
+    default:
+      - loadconfigs
+runner_type: "mistral-v2"

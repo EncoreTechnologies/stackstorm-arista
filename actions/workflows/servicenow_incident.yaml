@@ -1,0 +1,57 @@
+version: '2.0'
+
+arista.servicenow_incident:
+  type: direct
+  input:
+    - hosts
+    - sys_id
+
+  tasks:
+    facts:
+      action: arista.inventory
+      input:
+        hosts: "{{ _.hosts }}"
+      publish:
+        facts: "{{ task('facts').result.facts }}"
+      on-success:
+        - logs
+        
+    logs:
+      action: arista.logs
+      input:
+        hosts: "{{ _.hosts }}"
+      publish:
+        logs: "{{ task('logs').result.result }}"
+      on-success:
+        - ip_route
+
+    ip_route:
+      action: arista.cli
+      input:
+        hosts: "{{ _.hosts }}"
+        command: "show ip route"
+      publish:
+        ip_route: "{{ task('ip_route').result.result }}"
+      on-success:
+        - bgp_summary
+
+    bgp_summary:
+      action: arista.cli
+      input:
+        hosts: "{{ _.hosts }}"
+        command: "show bgp summary"
+      publish:
+        bgp_summary: "{{ task('bgp_summary').result.result }}"
+      # on-success:
+      #   - servicenow_update
+
+    # servicenow_update:
+    #   action: servicenow.update
+    #   input:
+    #     table: incident
+    #     sysid: "{{ _.sys_id }}"
+    #     payload:
+    #       comments: "Adding these from StackStorm"
+        
+  output:
+    result: "{{ _.result }}"

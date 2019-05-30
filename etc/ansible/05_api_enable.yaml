@@ -8,6 +8,7 @@
       eos_config:
         lines:
           - lldp management-address Management 1
-          - management api http-commands
-          -    no shutdown
-          - end
+          - |
+            management api http-commands
+                no shutdown
+            end
