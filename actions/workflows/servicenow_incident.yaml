@@ -56,22 +56,23 @@ arista.servicenow_incident:
           comments: |
             [code]
             <h3>FACTS</h3>
-            <pre><code>{{ to_yaml_string(_.facts) }}</code></pre>
+            <pre><code>{{ to_yaml_string(_.facts) | replace('\n', '<br/>') }}</code></pre>
         
             <h3>LOGS</h3>
             {% for host_logs in _.logs  %}
             <h5>{{ host_logs.host }}</h5>
-            <pre><code>{{ host_logs.result | replace('\\\\\\\\n', '\n') }}</code></pre>
+            <pre><code>{{ host_logs.result | replace('\\\\\\\\n', '<br/>') }}</code></pre>
             {% endfor -%}
 
             <h3>show ip route</h3>
             {% for host_routes in _.ip_route  %}
             <h5>{{ host_routes.host }}</h5>
-            <pre><code>{{ host_routes.result | replace('\\\\n', '\n') }}</code></pre>
+            <pre><code>{{ host_routes.result | replace('\\\\n', '<br/>') }}</code></pre>
             {% endfor -%}
 
             <h3>show ip bgp summary</h3>
             {% for host_bgp in _.bgp_summary  %}
             <h5>{{ host_bgp.host }}</h5>
-            <pre><code>{{ host_bgp.result | replace('\\\\n', '\n') }}</code></pre>
+            <pre><code>{{ host_bgp.result | replace('\\\\n', '<br/>') }}</code></pre>
             {% endfor -%}
+            [/code]
