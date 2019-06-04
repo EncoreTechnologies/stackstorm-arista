@@ -150,7 +150,7 @@ class SwitchCon:
     def _get_hostname(self):
         "Gets the hostname for the switch"
         result = self.run_commands(['show hostname'])
-        print("get hostname = {}".format(json_pretty(result)))
+        #print("get hostname = {}".format(json_pretty(result)))
         return result[0]['hostname']
 
     def _add_lldp_neighbors(self):

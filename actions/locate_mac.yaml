@@ -12,7 +12,7 @@ parameters:
   host:
     type: string
     description: "Hostname/IP of the switch where the search should begin"
-    default: "{{ st2kv.system.arista.hosts | first }}"
+    default: "{{ st2kv.system.arista.hosts | from_json_string | first }}"
   username:
     type: string
     description: "Username to use when connecting to the switches (must be valid for all switches in the fabric)."
