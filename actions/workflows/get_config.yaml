@@ -12,7 +12,7 @@ tasks:
     next:
       - when: "{{ succeeded() }}"
         publish:
-          - result: "{{ result() | map(attribute='output.result') | list }}"
+          - result: "{{ result() }}"
 
 output:
   - result: "{{ ctx().result }}"
