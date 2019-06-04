@@ -58,23 +58,23 @@ tasks:
         comments: |
           [code]
           <h2>FACTS</h2>
-          <pre><code>{{ ctx().facts | to_yaml_string | replace('\n', '<br/>') }}</code></pre>
+          <pre><code>{{ ctx().facts | to_json_string | replace('\n', '<br/>') }}</code></pre>
+
+          <h2>LOGS</h2>
+          {% for host_logs in ctx().logs  %}
+          <h4>{{ host_logs.host }}</h4>
+          <pre><code>{{ host_logs.result | replace('\\\\\\\\n', '<br/>') }}</code></pre>
+          {% endfor -%}
+
+          <h2>show ip route</h2>
+          {% for host_routes in ctx().ip_route  %}
+          <h4>{{ host_routes.host }}</h4>
+          <pre><code>{{ host_routes.result | replace('\\\\n', '<br/>') }}</code></pre>
+          {% endfor -%}
+
+          <h2>show ip bgp summary</h2>
+          {% for host_bgp in ctx().bgp_summary  %}
+          <h4>{{ host_bgp.host }}</h4>
+          <pre><code>{{ host_bgp.result | replace('\\\\n', '<br/>') }}</code></pre>
+          {% endfor -%}
           [/code]
-
-# <h2>LOGS</h2>
-# {% for host_logs in ctx().logs  %}
-# <h4>{{ host_logs.host }}</h4>
-# <pre><code>{{ host_logs.result | replace('\\\\\\\\n', '<br/>') }}</code></pre>
-# {% endfor -%}
-
-# <h2>show ip route</h2>
-# {% for host_routes in ctx().ip_route  %}
-# <h4>{{ host_routes.host }}</h4>
-# <pre><code>{{ host_routes.result | replace('\\\\n', '<br/>') }}</code></pre>
-# {% endfor -%}
-
-# <h2>show ip bgp summary</h2>
-# {% for host_bgp in ctx().bgp_summary  %}
-# <h4>{{ host_bgp.host }}</h4>
-# <pre><code>{{ host_bgp.result | replace('\\\\n', '<br/>') }}</code></pre>
-# {% endfor -%}
