@@ -9,7 +9,7 @@ tasks:
     action: napalm.loadconfig
     with: "{{ ctx().hosts }}"
     input:
-      hostname: "{{ ctx().hostname }}"
+      hostname: "{{ item() }}"
       config_text: "{{ ctx().config }}"
     next:
       - when: "{{ succeeded() }}"

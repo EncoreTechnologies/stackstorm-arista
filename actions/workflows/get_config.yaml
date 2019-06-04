@@ -8,7 +8,7 @@ tasks:
     action: napalm.get_config
     with: "{{ ctx().hosts }}"
     input:
-      hostname: "{{ ctx().hostname }}"
+      hostname: "{{ item() }}"
     next:
       - when: "{{ succeeded() }}"
         publish:
