@@ -29,8 +29,9 @@ tasks:
     with: "{{ ctx().configs }}"
     input:
       cmd: |
-        echo '/arista/item().host/ctx().date';
-        echo 'item().config.startup'
+        echo '{{ item().confg.candidate }}' > /arista/{{ ctx().date }}_{{ item().host }}_candidate.conf;
+        echo '{{ item().confg.running }}' > /arista/{{ ctx().date }}_{{ item().host }}_running.conf;
+        echo '{{ item().confg.startup }}' > /arista/{{ ctx().date }}_{{ item().host }}_startup.conf;
 
 output:
   - date: "{{ ctx().date }}"
