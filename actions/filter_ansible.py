@@ -10,7 +10,7 @@ class FilterAnsible(Action):
         for play in result['plays']:
             for task in play['tasks']:
                 task_name = task['task']['name']
-                task_extract_details = next(t for t in tasks if t['name'] == task_name)
+                task_extract_details = next((t for t in tasks if t['name'] == task_name), None)
                 if not task_extract_details:
                     continue
 

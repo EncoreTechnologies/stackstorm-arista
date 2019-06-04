@@ -7,3 +7,7 @@
     - name: Get versions
       eos_command:
         commands: show version | json
+      register: result_versions
+
+    - debug:
+        vars: result_versions
