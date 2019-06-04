@@ -18,7 +18,7 @@ tasks:
   logs:
     action: arista.logs
     input:
-      hosts: "{{ _.hosts }}"
+      hosts: "{{ ctx().hosts }}"
     next:
       - when: "{{ succeeded() }}"
         publish:
@@ -28,7 +28,7 @@ tasks:
   ip_route:
     action: arista.cli
     input:
-      hosts: "{{ _.hosts }}"
+      hosts: "{{ ctx().hosts }}"
       command: "show ip route"
       raw: true
     next:
@@ -40,7 +40,7 @@ tasks:
   bgp_summary:
     action: arista.cli
     input:
-      hosts: "{{ _.hosts }}"
+      hosts: "{{ ctx().hosts }}"
       command: "show ip bgp summary"
       raw: true
     next:
@@ -53,27 +53,27 @@ tasks:
     action: servicenow.update
     input:
       table: incident
-      sysid: "{{ _.sys_id }}"
+      sysid: "{{ ctx().sys_id }}"
       payload:
         comments: |
           [code]
           <h2>FACTS</h2>
-          <pre><code>{{ to_yaml_string(_.facts) | replace('\n', '<br/>') }}</code></pre>
+          <pre><code>{{ to_yaml_string(ctx().facts) | replace('\n', '<br/>') }}</code></pre>
       
           <h2>LOGS</h2>
-          {% for host_logs in _.logs  %}
+          {% for host_logs in ctx().logs  %}
           <h4>{{ host_logs.host }}</h4>
           <pre><code>{{ host_logs.result | replace('\\\\\\\\n', '<br/>') }}</code></pre>
           {% endfor -%}
 
           <h2>show ip route</h2>
-          {% for host_routes in _.ip_route  %}
+          {% for host_routes in ctx().ip_route  %}
           <h4>{{ host_routes.host }}</h4>
           <pre><code>{{ host_routes.result | replace('\\\\n', '<br/>') }}</code></pre>
           {% endfor -%}
 
           <h2>show ip bgp summary</h2>
-          {% for host_bgp in _.bgp_summary  %}
+          {% for host_bgp in ctx().bgp_summary  %}
           <h4>{{ host_bgp.host }}</h4>
           <pre><code>{{ host_bgp.result | replace('\\\\n', '<br/>') }}</code></pre>
           {% endfor -%}
