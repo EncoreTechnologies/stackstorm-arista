@@ -61,18 +61,18 @@ arista.servicenow_incident:
             <h2>LOGS</h2>
             {% for host_logs in _.logs  %}
             <h4>{{ host_logs.host }}</h4>
-            <pre><code>{{ host_logs.result }}</code></pre>
+            <pre><code>{{ host_logs.result | replace('\\\\n', '<br/>') }}</code></pre>
             {% endfor -%}
 
             <h2>show ip route</h2>
             {% for host_routes in _.ip_route  %}
             <h4>{{ host_routes.host }}</h4>
-            <pre><code>{{ host_routes.result }}</code></pre>
+            <pre><code>{{ host_routes.result | replace('\\\\n', '<br/>') }}</code></pre>
             {% endfor -%}
 
             <h2>show ip bgp summary</h2>
             {% for host_bgp in _.bgp_summary  %}
             <h4>{{ host_bgp.host }}</h4>
-            <pre><code>{{ host_bgp.result }}</code></pre>
+            <pre><code>{{ host_bgp.result | replace('\\\\n', '<br/>') }}</code></pre>
             {% endfor -%}
             [/code]
