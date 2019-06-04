@@ -22,6 +22,7 @@ tasks:
       - when: "{{ succeeded() }}"
         publish:
           - date: "{{ result().stdout }}"
+        do: write_configs
 
   write_configs:
     action: core.local
