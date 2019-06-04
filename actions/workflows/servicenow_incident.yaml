@@ -58,7 +58,7 @@ tasks:
         comments: |
           [code]
           <h2>FACTS</h2>
-          <pre><code>{{ ctx().facts | to_yaml_string | replace('\n', '<br/>') }}</code></pre>
+          <pre><code>{{ ctx().facts }}</code></pre>
       
           <h2>LOGS</h2>
           {% for host_logs in ctx().logs  %}
