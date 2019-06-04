@@ -12,14 +12,17 @@ parameters:
   host:
     type: string
     description: "Hostname/IP of the switch where the search should begin"
+    default: "{{ st2kv.system.arista.hosts | first }}"
   username:
     type: string
     description: "Username to use when connecting to the switches (must be valid for all switches in the fabric)."
+    default: "{{ st2kv.system.arista.username }}"
   password:
     type: string
     secret: true
     description: "Password to use when connecting to the switches (must be valid for all switches in the fabric)."
+    default: "{{ st2kv.system.arista.password | decrypt_kv }}"
   ssl_verify:
     type: boolean
-    default: True
+    default: False
     description: "Verify SSL/TLS certificates when connecting to the switch's HTTP APIs"
