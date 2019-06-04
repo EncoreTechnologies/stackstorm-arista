@@ -14,8 +14,8 @@ tasks:
     next:
       - when: "{{ succeeded() }}"
         publish:
-          - cli_command: "{{ result().command }}"
-          - cli_result: "{{ result().result }}"
+          - cli_command: "{{ result().output.command }}"
+          - cli_result: "{{ result().output.result }}"
 
 output:
   - command: "{{ ctx().cli_command }}"

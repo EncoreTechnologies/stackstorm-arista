@@ -12,7 +12,7 @@ tasks:
     next:
       - when: "{{ succeeded() }}"
         publish:
-          - facts: "{{ result().facts }}"
+          - facts: "{{ result().output.facts }}"
         do: logs
       
   logs:
@@ -22,7 +22,7 @@ tasks:
     next:
       - when: "{{ succeeded() }}"
         publish:
-          - facts: "{{ result().result }}"
+          - facts: "{{ result().output.result }}"
         do: ip_route
 
   ip_route:
@@ -34,7 +34,7 @@ tasks:
     next:
       - when: "{{ succeeded() }}"
         publish:
-          - facts: "{{ result().result }}"
+          - facts: "{{ result().output.result }}"
         do: bgp_summary
 
   bgp_summary:
@@ -46,7 +46,7 @@ tasks:
     next:
       - when: "{{ succeeded() }}"
         publish:
-          - facts: "{{ result().result }}"
+          - facts: "{{ result().output.result }}"
         do: servicenow_update
 
   servicenow_update:

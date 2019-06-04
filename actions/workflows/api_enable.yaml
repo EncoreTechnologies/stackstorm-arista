@@ -16,7 +16,7 @@ tasks:
     next:
       - when: "{{ succeeded() }}"
         publish:
-          - result: "{{ result().result }}"
+          - result: "{{ result().output.result }}"
 
 output:
   - result: "{{ ctx().result }}"
