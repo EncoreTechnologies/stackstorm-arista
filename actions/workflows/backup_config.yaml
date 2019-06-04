@@ -35,3 +35,4 @@ tasks:
 
 output:
   - date: "{{ ctx().date }}"
+  - hosts: "{{ ctx().hosts }}"
