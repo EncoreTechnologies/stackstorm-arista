@@ -4,6 +4,7 @@ enabled: true
 entry_point: workflows/api_enable.yaml
 name: api_enable
 pack: arista
+runner_type: "orquesta"
 parameters:
   hosts:
     type: array
@@ -13,4 +14,3 @@ parameters:
     type: array
     default:
       - loadconfigs
-runner_type: "mistral-v2"

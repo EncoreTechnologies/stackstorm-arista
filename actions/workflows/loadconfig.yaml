@@ -1,20 +1,20 @@
-version: '2.0'
+version: '1.0'
 
-arista.loadconfig:
-  type: direct
-  input:
-    - hosts
-    - config
+input:
+  - hosts
+  - config
 
-  tasks:
-    loadconfigs:
-      action: napalm.loadconfig
-      with-items: "hostname in {{ _.hosts }}"
-      input:
-        hostname: "{{ _.hostname }}"
-        config_text: "{{ _.config }}"
-      publish:
-        result: "{{ task('loadconfigs').result | map(attribute='result') | list }}"
+tasks:
+  loadconfigs:
+    action: napalm.loadconfig
+    with: "{{ ctx().hosts }}"
+    input:
+      hostname: "{{ ctx().hostname }}"
+      config_text: "{{ ctx().config }}"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - result: "{{ result() | map(attribute='result') | list }}"
 
-  output:
-    result: "{{ _.result }}"
+output:
+  result: "{{ ctx().result }}"

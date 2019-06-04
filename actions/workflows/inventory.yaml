@@ -1,27 +1,28 @@
-version: '2.0'
+version: '1.0'
 
-arista.inventory:
-  type: direct
-  input:
-    - hosts
+input:
+  - hosts
 
-  tasks:
-    facts:
-      action: napalm.get_facts
-      with-items: "hostname in {{ _.hosts }}"
-      input:
-        hostname: "{{ _.hostname }}"
-      publish:
-        facts: "{{ task('facts').result | map(attribute='result.raw') | list }}"
-      on-success:
-        - filter_facts
+tasks:
+  facts:
+    action: napalm.get_facts
+    with: "{{ ctx().hosts }}"
+    input:
+      hostname: "{{ item() }}"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - facts: "{{ result() | map(attribute='result.raw') | list }}"
+        do: filter_facts
 
-    filter_facts:
-      action: arista.filter_facts
-      input:
-        facts: "{{ _.facts }}"
-      publish:
-        facts_filtered: "{{ task('filter_facts').result.result }}"
+  filter_facts:
+    action: arista.filter_facts
+    input:
+      facts: "{{ _.facts }}"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - facts_filtered: "{{ result().result }}"
 
-  output:
-    facts: "{{ _.facts_filtered }}"
+output:
+  - facts: "{{ ctx().facts_filtered }}"

@@ -1,49 +1,47 @@
-version: '2.0'
+version: '1.0'
 
-arista.cli:
-  type: direct
-  input:
-    - hosts
-    - command
-    - raw
+input:
+  - hosts
+  - command
+  - raw
 
-  tasks:
-    dispatch:
-      action: core.noop
-      on-success:
-        - make_command_output_json: "{{ not _.raw }}"
-        - run_cli: "{{ _.raw }}"
-          
-    make_command_output_json:
-      action: core.noop
-      publish:
-        command: "{{ _.command }} | json"
-      on-success:
-        - run_cli
+tasks:
+  dispatch:
+    action: core.noop
+    next:
+      - when: "{{ not ctx().raw }}"
+        publish:
+          - command: "{{ ctx().command }} | json"
+        do: run_cli
+      - when: "{{ ctx().raw }}"
+        do: run_cli
 
-    run_cli:
-      action: napalm.cli
-      with-items: "hostname in {{ _.hosts }}"
-      input:
-        hostname: "{{ _.hostname }}"
-        commands:
-          - "{{ _.command }}"
-      publish:
-        cli_result: "{{ task('run_cli').result | map(attribute='result.raw') | list }}"
-      on-success:
-        - filter_cli
+  run_cli:
+    action: napalm.cli
+    with: "{{ ctx().hosts }}"
+    input:
+      hostname: "{{ item() }}"
+      commands:
+        - "{{ ctx().command }}"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - cli_result: "{{ result() | map(attribute='result.raw') | list }}"
+        do: filter_cli
 
-    filter_cli:
-      action: arista.filter_cli
-      input:
-        cli_result: "{{ _.cli_result }}"
-        command: "{{ _.command }}"
-        hosts: "{{ _.hosts }}"
-        raw: "{{ _.raw }}"
-      publish:
-        cli_result_filtered: "{{ task('filter_cli').result.result }}"
+  filter_cli:
+    action: arista.filter_cli
+    input:
+      cli_result: "{{ ctx().cli_result }}"
+      command: "{{ ctx().command }}"
+      hosts: "{{ ctx().hosts }}"
+      raw: "{{ ctx().raw }}"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - cli_result_filtered: "{{ result().result }}"
 
-  output:
-    command: "{{ _.command }}"
-    result: "{{ _.cli_result_filtered }}"
-    raw: "{{ _.raw }}"
+output:
+  - command: "{{ ctx().command }}"
+  - result: "{{ ctx().cli_result_filtered }}"
+  - raw: "{{ ctx().raw }}"

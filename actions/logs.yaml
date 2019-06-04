@@ -4,6 +4,7 @@ enabled: true
 entry_point: workflows/logs.yaml
 name: logs
 pack: arista
+runner_type: "orquesta"
 parameters:
   hosts:
     type: array
@@ -18,4 +19,3 @@ parameters:
     default:
       - pull_logs
       - filter_cli
-runner_type: "mistral-v2"

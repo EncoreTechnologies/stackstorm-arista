@@ -1,22 +1,22 @@
-version: '2.0'
+version: '1.0'
 
-arista.api_enable:
-  type: direct
-  input:
-    - hosts
+input:
+  - hosts
 
-  tasks:
-    loadconfigs:
-      action: arista.loadconfig
-      input:
-        hosts: "{{ _.hosts }}"
-        config: |
-          lldp management-address Management 1
-          management api http-commands
-              no shutdown
-          end
-      publish:
-        result: "{{ task('loadconfigs').result.result }}"
+tasks:
+  loadconfigs:
+    action: arista.loadconfig
+    input:
+      hosts: "{{ ctx().hosts }}"
+      config: |
+        lldp management-address Management 1
+        management api http-commands
+            no shutdown
+        end
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - result: "{{ result().result }}"
 
-  output:
-    result: "{{ _.result }}"
+output:
+  - result: "{{ ctx().result }}"

@@ -4,6 +4,7 @@ enabled: true
 entry_point: workflows/cli.yaml
 name: cli
 pack: arista
+runner_type: "orquesta"
 parameters:
   hosts:
     type: array
@@ -23,4 +24,3 @@ parameters:
       - make_command_output_json
       - run_cli
       - filter_cli
-runner_type: "mistral-v2"

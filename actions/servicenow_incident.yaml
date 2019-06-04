@@ -4,6 +4,7 @@ enabled: true
 entry_point: workflows/servicenow_incident.yaml
 name: servicenow_incident
 pack: arista
+runner_type: "orquesta"
 parameters:
   hosts:
     type: array
@@ -15,4 +16,3 @@ parameters:
     type: array
     default:
       - loadconfigs
-runner_type: "mistral-v2"
