@@ -5,7 +5,7 @@ input:
 
 tasks:
   loadconfigs:
-    action: arista.loadconfig
+    action: arista.load_config
     input:
       hosts: "{{ ctx().hosts }}"
       config: |

@@ -1,0 +1,19 @@
+---
+description: "Loads a config block on a list of hosts"
+enabled: true
+entry_point: workflows/load_config.yaml
+name: load_config
+pack: arista
+runner_type: "orquesta"
+parameters:
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
+    default: "{{ st2kv.system.arista.hosts }}"
+  config:
+    type: string
+    description: "Config text to load"
+  skip_notify:
+    type: array
+    default:
+      - loadconfigs

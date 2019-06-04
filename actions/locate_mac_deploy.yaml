@@ -1,8 +1,8 @@
 ---
-description: "Loads a config block on a list of hosts"
+description: "Deploys the locate_mac.py script to all Arista hosts"
 enabled: true
-entry_point: workflows/loadconfig.yaml
-name: loadconfig
+entry_point: workflows/locate_mac_deploy.yaml
+name: locate_mac_deploy
 pack: arista
 runner_type: "orquesta"
 parameters:
@@ -10,9 +10,6 @@ parameters:
     type: array
     description: "List of hosts to pull data from. If not specified, pulls from all hosts"
     default: "{{ st2kv.system.arista.hosts }}"
-  config:
-    type: string
-    description: "Config text to load"
   skip_notify:
     type: array
     default:

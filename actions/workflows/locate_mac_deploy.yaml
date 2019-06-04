@@ -5,7 +5,7 @@ input:
 
 tasks:
   enable_scp:
-    action: arista.loadconfig
+    action: arista.load_config
     input:
       hosts: "{{ ctx().hosts }}"
       config: >

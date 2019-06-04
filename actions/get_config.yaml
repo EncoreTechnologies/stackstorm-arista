@@ -1,0 +1,16 @@
+---
+description: "Gets the config from a list of hosts"
+enabled: true
+entry_point: workflows/get_config.yaml
+name: get_config
+pack: arista
+runner_type: "orquesta"
+parameters:
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
+    default: "{{ st2kv.system.arista.hosts }}"
+  skip_notify:
+    type: array
+    default:
+      - get_config

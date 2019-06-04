@@ -1,0 +1,18 @@
+version: '1.0'
+
+input:
+  - hosts
+
+tasks:
+  get_config:
+    action: napalm.get_config
+    with: "{{ ctx().hosts }}"
+    input:
+      hostname: "{{ ctx().hostname }}"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - result: "{{ result() | map(attribute='result') | list }}"
+
+output:
+  result: "{{ ctx().result }}"
