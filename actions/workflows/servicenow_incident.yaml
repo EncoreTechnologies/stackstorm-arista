@@ -1,80 +1,78 @@
-version: '1.0'
+version: '2.0'
 
-input:
-  - hosts
-  - sys_id
+arista.servicenow_incident:
+  type: direct
+  input:
+    - hosts
+    - sys_id
 
-tasks:
-  facts:
-    action: arista.inventory
-    input:
-      hosts: "{{ ctx().hosts }}"
-    next:
-      - when: "{{ succeeded() }}"
-        publish:
-          - facts: "{{ result().output.facts }}"
-        do: logs
-      
-  logs:
-    action: arista.logs
-    input:
-      hosts: "{{ ctx().hosts }}"
-    next:
-      - when: "{{ succeeded() }}"
-        publish:
-          - logs: "{{ result().output.result }}"
-        do: ip_route
+  tasks:
+    facts:
+      action: arista.inventory
+      input:
+        hosts: "{{ _.hosts }}"
+      publish:
+        facts: "{{ task('facts').result.output.facts }}"
+      on-success:
+        - logs
+        
+    logs:
+      action: arista.logs
+      input:
+        hosts: "{{ _.hosts }}"
+      publish:
+        logs: "{{ task('logs').result.output.result }}"
+      on-success:
+        - ip_route
 
-  ip_route:
-    action: arista.cli
-    input:
-      hosts: "{{ ctx().hosts }}"
-      command: "show ip route"
-      raw: true
-    next:
-      - when: "{{ succeeded() }}"
-        publish:
-          - ip_route: "{{ result().output.result }}"
-        do: bgp_summary
+    ip_route:
+      action: arista.cli
+      input:
+        hosts: "{{ _.hosts }}"
+        command: "show ip route"
+        raw: true
+      publish:
+        ip_route: "{{ task('ip_route').result.output.result }}"
+      on-success:
+        - bgp_summary
 
-  bgp_summary:
-    action: arista.cli
-    input:
-      hosts: "{{ ctx().hosts }}"
-      command: "show ip bgp summary"
-      raw: true
-    next:
-      - when: "{{ succeeded() }}"
-        publish:
-          - bgp_summary: "{{ result().output.result }}"
-        do: servicenow_update
+    bgp_summary:
+      action: arista.cli
+      input:
+        hosts: "{{ _.hosts }}"
+        command: "show ip bgp summary"
+        raw: true
+      publish:
+        bgp_summary: "{{ task('bgp_summary').result.output.result }}"
+      on-success:
+        - servicenow_update
 
-  servicenow_update:
-    action: servicenow.update
-    input:
-      table: incident
-      sysid: "{{ ctx().sys_id }}"
-      payload:
-        comments: |
-          [code]
-          <h2>FACTS</h2>
-          <pre><code>{{ ctx().facts | to_json_string | replace('\n', '<br/>') }}</code></pre>
+    servicenow_update:
+      action: servicenow.update
+      input:
+        table: incident
+        sysid: "{{ _.sys_id }}"
+        payload:
+          comments: |
+            [code]
+            <h2>FACTS</h2>
+            <pre><code>{{ to_yaml_string(_.facts) | replace('\n', '<br/>') }}</code></pre>
+        
+            <h2>LOGS</h2>
+            {% for host_logs in _.logs  %}
+            <h4>{{ host_logs.host }}</h4>
+            <pre><code>{{ host_logs.result | replace('\\\\\\\\n', '<br/>') }}</code></pre>
+            {% endfor -%}
 
-          <h2>LOGS</h2>
-          {% for host_logs in ctx().logs  %}
-          <h4>{{ host_logs.host }}</h4>
-          <pre><code>{{ host_logs.result | replace('\\\\\\\\n', '<br/>') }}</code></pre>
-          {% endfor -%}
+            <h2>show ip route</h2>
+            {% for host_routes in _.ip_route  %}
+            <h4>{{ host_routes.host }}</h4>
+            <pre><code>{{ host_routes.result | replace('\\\\n', '<br/>') }}</code></pre>
+            {% endfor -%}
 
-          <h2>show ip route</h2>
-          {% for host_routes in ctx().ip_route  %}
-          <h4>{{ host_routes.host }}</h4>
-          <pre><code>{{ host_routes.result | replace('\\\\n', '<br/>') }}</code></pre>
-          {% endfor -%}
-
-          <h2>show ip bgp summary</h2>
-          {% for host_bgp in ctx().bgp_summary  %}
-          <h4>{{ host_bgp.host }}</h4>
-          <pre><code>{{ host_bgp.result | replace('\\\\n', '<br/>') }}</code></pre>
-          {% endfor -%}
-          [/code]
+            <h2>show ip bgp summary</h2>
+            {% for host_bgp in _.bgp_summary  %}
+            <h4>{{ host_bgp.host }}</h4>
+            <pre><code>{{ host_bgp.result | replace('\\\\n', '<br/>') }}</code></pre>
+            {% endfor -%}
+            [/code]
