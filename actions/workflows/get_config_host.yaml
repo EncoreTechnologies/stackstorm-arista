@@ -13,7 +13,7 @@ tasks:
         publish:
           - result:
               host: "{{ ctx().host }}"
-              config: "{{ result().result }}"
+              config: "{{ result().result.raw }}"
 
 output:
   - result: "{{ ctx().result }}"
