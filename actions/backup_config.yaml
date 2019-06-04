@@ -1,0 +1,16 @@
+---
+description: "Creates backups of the configs for a list of hosts"
+enabled: true
+entry_point: workflows/backup_config.yaml
+name: backup_config
+pack: arista
+runner_type: "orquesta"
+parameters:
+  hosts:
+    type: array
+    description: "List of hosts to pull data from. If not specified, pulls from all hosts"
+    default: "{{ st2kv.system.arista.hosts }}"
+  skip_notify:
+    type: array
+    default:
+      - loadconfigs

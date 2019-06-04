@@ -1,0 +1,35 @@
+version: '1.0'
+
+input:
+  - hosts
+
+tasks:
+  get_configs:
+    action: arista.get_config
+    input:
+      hosts: "{{ ctx().hosts }}"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - configs: "{{ result().output.result }}"
+        do: generate_date
+
+  generate_date:
+    action: core.local
+    input:
+      cmd: "date '+%Y-%m-%d-%H-%M-%S'"
+    next:
+      - when: "{{ succeeded() }}"
+        publish:
+          - date: "{{ result().stdout }}"
+
+  write_configs:
+    action: core.local
+    with: "{{ ctx().configs }}"
+    input:
+      cmd: |
+        echo '/arista/item().host/ctx().date';
+        echo 'item().config.startup'
+
+output:
+  - date: "{{ ctx().date }}"

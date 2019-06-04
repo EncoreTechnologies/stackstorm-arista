@@ -5,10 +5,10 @@ input:
 
 tasks:
   get_config:
-    action: napalm.get_config
+    action: arista.get_config_host
     with: "{{ ctx().hosts }}"
     input:
-      hostname: "{{ item() }}"
+      host: "{{ item() }}"
     next:
       - when: "{{ succeeded() }}"
         publish:
