@@ -10,4 +10,4 @@
       register: result_versions
 
     - debug:
-        vars: result_versions
+        var: result_versions
