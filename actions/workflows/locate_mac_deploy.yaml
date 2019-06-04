@@ -27,4 +27,4 @@ tasks:
           - result: "{{ result() }}"
       
 output:
-  result: "{{ ctx().result }}"
+  - result: "{{ ctx().result }}"

@@ -17,4 +17,4 @@ tasks:
           - result: "{{ result() | map(attribute='result') | list }}"
 
 output:
-  result: "{{ ctx().result }}"
+  - result: "{{ ctx().result }}"
