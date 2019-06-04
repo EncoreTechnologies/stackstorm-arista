@@ -18,7 +18,7 @@ tasks:
 
   copy_script:
     action: core.local
-    with: "{{ _.hosts }}"
+    with: "{{ ctx().hosts }}"
     input:
       cmd: "sshpass -p 'arista' scp /opt/stackstorm/packs/arista/etc/locateMac.py arista@{{ item() }}:/mnt/flash/"
     next:

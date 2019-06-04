@@ -8,8 +8,8 @@ tasks:
   pull_logs:
     action: arista.cli
     input:
-      hosts: "{{ _.hosts }}"
-      command: "show logging {{ _.count }}"
+      hosts: "{{ ctx().hosts }}"
+      command: "show logging {{ ctx().count }}"
       raw: true
     next:
       - when: "{{ succeeded() }}"

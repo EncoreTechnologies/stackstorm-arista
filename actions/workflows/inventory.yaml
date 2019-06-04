@@ -18,7 +18,7 @@ tasks:
   filter_facts:
     action: arista.filter_facts
     input:
-      facts: "{{ _.facts }}"
+      facts: "{{ ctx().facts }}"
     next:
       - when: "{{ succeeded() }}"
         publish:
