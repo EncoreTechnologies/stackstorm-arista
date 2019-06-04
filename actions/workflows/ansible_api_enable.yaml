@@ -9,7 +9,7 @@ tasks:
     input:
       cwd: "/opt/stackstorm/packs/arista/etc/ansible"
       playbook: "./05_api_enable.yaml"
-      inventory_file: "./hosts"
+      inventory_file: "{{ ctx().hosts | join(',') }},"
       env:
         ANSIBLE_STDOUT_CALLBACK: "json"
     next:
