@@ -1,7 +1,7 @@
 ---
 description: "Gets the config from a single host"
 enabled: true
-entry_point: workflows/get_config.yaml
+entry_point: workflows/get_config_host.yaml
 name: get_config_host
 pack: arista
 runner_type: "orquesta"
